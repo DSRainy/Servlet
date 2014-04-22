@@ -22,10 +22,15 @@
 
 
     <%
+        
+        HttpSession mySession = request.getSession();
         List<Drug> drugList = (List<Drug>) request.getAttribute("drug");
         for (Drug drug : drugList) {
-            out.println("DrugCode : " + drug.getDrugCode());%><br/><br/><%
+            out.println("DrugCode : " + drug.getDrugCode() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Drug ID : " + drug.getId());%><br/><br/><%
         }
+        
+        
+        
     %>
 
 

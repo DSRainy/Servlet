@@ -66,10 +66,7 @@ public class QueryServlet extends HttpServlet {
 //            out.println("<body>");
 //            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
             while (rs.next()) {
-                if (drug == null) {
-                    drug = new Drug();
-                }
-
+                drug = new Drug();
                 drug.setId(rs.getString("ID"));
                 drug.setDrugCode(rs.getString("DRUGCODE"));
                 drugs.add(drug);
