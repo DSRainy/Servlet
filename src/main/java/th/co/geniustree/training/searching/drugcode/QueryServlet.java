@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import javax.sql.DataSource;
  *
  * @author Rain
  */
+@WebServlet(name = "test" , urlPatterns = "/test")
 public class QueryServlet extends HttpServlet {
 
     @Resource(lookup = "jdbc/TestPool")
@@ -44,14 +46,25 @@ public class QueryServlet extends HttpServlet {
             throws ServletException, IOException {
 
         List<Drug> drugs = new ArrayList<>();
-        Drug drug = new Drug();
+        Drug drug = null;
 
         String inputDrugCode = request.getParameter("drugCode");
         try (PrintWriter out = response.getWriter(); Connection con = dataSource.getConnection()) {
 
             Statement sm = con.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT * FROM DO_ITEM WHERE DRUGCODE LIKE \'" + inputDrugCode + "%\'");
+            String query;
+            query = "SELECT * FROM DO_ITEM WHERE DRUGCODE LIKE \'" + inputDrugCode + "%\'";
+//            query = "SELECT * FROM DO_ITEM WHERE ID = 3165";
+            ResultSet rs = sm.executeQuery(query);
 
+            
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet NewServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
             while (rs.next()) {
                 if (drug == null) {
                     drug = new Drug();
@@ -60,7 +73,16 @@ public class QueryServlet extends HttpServlet {
                 drug.setId(rs.getString("ID"));
                 drug.setDrugCode(rs.getString("DRUGCODE"));
                 drugs.add(drug);
+//                out.println("DrugCode : " + drug.getDrugCode() + 
+//                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+//                        + "Drug Id : " + drug.getId() + "<br/>");
+                
             }
+
+//            out.println("</body>");
+//            out.println("</html>");
+            
+            request.setAttribute("drug", drugs);
             request.getRequestDispatcher("renderdrugcode.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(QueryServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,4 +129,5 @@ public class QueryServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+   
 }

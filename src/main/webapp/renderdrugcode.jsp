@@ -4,6 +4,10 @@
     Author     : Rain
 --%>
 
+<%@page import="javax.faces.bean.RequestScoped"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="th.co.geniustree.training.searching.drugcode.Drug"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,11 +16,18 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <a href="index.html">back to main</a>
-        
-        
-            ${requestScope}
-        
-        
-    </body>
+    <center>
+        <a href="index.html">back to main</a><br/>
+    </center>
+
+
+    <%
+        List<Drug> drugList = (List<Drug>) request.getAttribute("drug");
+        for (Drug drug : drugList) {
+            out.println("DrugCode : " + drug.getDrugCode());%><br/><br/><%
+        }
+    %>
+
+
+</body>
 </html>
